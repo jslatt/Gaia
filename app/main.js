@@ -38,6 +38,7 @@ export default function Main() {
         }
     };
 
+    // OPEN AI
     const configuration = new Configuration({
         apiKey: process.env.OPENAI_API_KEY,
     });
@@ -48,9 +49,7 @@ export default function Main() {
             model: "gpt-3.5-turbo",
             messages: [{ "role": "system", "content": "You are a helpful assistant." }, { role: "user", content: promptPass }],
         });
-
-        console.log(completion.data.choices[0].message.content);
-
+        
         setAnalysis(completion.data.choices[0].message.content);
     }
 
@@ -82,9 +81,8 @@ export default function Main() {
 
         axios.request(options).then(function (response) {
             setData(response.data);
-            let p = "Write a Marine Corps analysis with the following location and weather data. Please provide specific guidance as to how this weather can impact the Marines willingness to fight, and how the USMC can use this as an advantage against the enemy.  Provide it in the specific format: Impact of Weather on Marine's Willingness to Fight (h1), Positive Impacts (h2), Negative Impacts (h2). Do not provide any other information. It should be at least 500 words. Split it up by each section and format the output in an HTML Div. Do not include <head> tags or <HTML> tags. \n " + JSON.stringify(response.data);
+            let p = "You are a squad leader for a Marine Corps infantry squad. Your task is to use this weather data to produce a report on how the weather will impact the mission. Provide specific guidance on how this weather will impact the Marines willingness to fight, and how the USMC can use this as an advantage against the enemy.  Provide with the following headings format: Positive Impacts (h2), Negative Impacts (h2) Enemies perspective (h2). Do not provide any other information. It should be at least 500 words. Split it up by each section and format the output in a HTML Div. Answer with bullet points and formatted headers. Do not include <head> tags or <HTML> tags. Give <h2> the following classes: sm:text-3xl text-2xl text-white title-font font-medium text-gray-900 mt-4 mb-4. Give the <ul> the classes: space-y-2 list-disc list-inside. \n " + JSON.stringify(response.data);
             p = p.substring(0, 8000)
-            console.log(p);
             askGPT(p)
         }).catch(function (error) {
             console.error(error);
@@ -116,13 +114,32 @@ export default function Main() {
             <div className="grid grid-cols-5">
                 <div className="bg-grey-900 col-span-2">
 
+<div className=" border-b border-gray-200 dark:border-gray-700">
+    <ul className="flex flex-wrap -mb-px text-sm font-medium text-center" >
+        <li className="mr-2" role="presentation">
+            <button onClick={() => {setLat(21.8988072); setLong(11.470691)}} className="inline-block p-4 border-b-2 text-gray-300 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"  type="button" >Sahara Desert</button>
+        </li>
+        <li className="mr-2" role="presentation">
+            <button onClick={() => {setLat(-71.3089937); setLong(0)}} className="inline-block p-4 border-b-2 text-gray-300 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"  type="button" >Antarctica</button>
+        </li>
+        <li className="mr-2" role="presentation">
+            <button onClick={() => {setLat(31.6350798); setLong(65.6677686)}} className="inline-block p-4 border-b-2 text-gray-300 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"  type="button" >Kandahar</button>
+        </li>
+        <li className="mr-2" role="presentation">
+            <button onClick={() => {setLat(21.9916367); setLong(117.5383658)}} className="inline-block p-4 border-b-2 text-gray-300 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"  type="button" >Kaohsiung</button>
+        </li>
+
+    </ul>
+
+</div>
+
                     <form>
                         <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                         <div className="relative">
-                            <input type="text" onChange={changeLat} className="block w-full p-4 pl-10 text-sm text-gray-900  bg-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="LATTITUDE" required />
-                            <input type="text" onChange={changeLong} className="block w-full p-4 pl-10 text-sm text-gray-900  bg-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="LONGITUDE" required />
+                            <input type="text" id="lat" onChange={changeLat} className="block w-full p-4 pl-10 text-sm text-gray-900  bg-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="LATTITUDE" required />
+                            <input type="text" id="long" onChange={changeLong} className="block w-full p-4 pl-10 text-sm text-gray-900  bg-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="LONGITUDE" required />
 
-                            <a onClick={getWeather} className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Analyze</a>
+                            <a onClick={getWeather} className="cursor-pointer text-white absolute right-2.5 bottom-2.5 bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Analyze</a>
                         </div>
                     </form>
 
@@ -147,7 +164,7 @@ export default function Main() {
                     </div>
                 </div>
             </div>
-
+            
             <Charts />
         </main>
     )

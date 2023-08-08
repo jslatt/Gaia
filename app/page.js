@@ -17,11 +17,6 @@ export default function Home() {
           <a href="https://github.com/jslatt/Gaia" target="_blank" className="mr-5 hover:text-white">Code Repository</a>
           <a href="https://jslattery.notion.site/Gaia-Tomorrow-io-Hackathon-198c372c07f6418189d1b86b707beb2d?pvs=4" target="_blank" className="mr-5 hover:text-white">Documentation</a>
         </nav>
-        <button className="inline-flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-gray-700 rounded text-base mt-4 md:mt-0">Button
-          <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 ml-1" viewBox="0 0 24 24">
-            <path d="M5 12h14M12 5l7 7-7 7"></path>
-          </svg>
-        </button>
       </div>
     </header>
     
