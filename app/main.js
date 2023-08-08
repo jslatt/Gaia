@@ -13,7 +13,7 @@ export default function Main() {
     const [lat, setLat] = useState(38.5167915);
     const [long, setLong] = useState(-77.2988706);
     const [data, setData] = useState('');
-    const [analysis, setAnalysis] = useState(' ');
+    const [analysis, setAnalysis] = useState('Nothing to see here :-) Enter coordinates to begin.');
     const [map, setMap] = useState(null);
 
 
@@ -147,38 +147,6 @@ export default function Main() {
                     </div>
                 </div>
             </div>
-            <section className="text-gray-400 bg-gray-900 body-font">
-  <div className="container px-5 py-4 mx-auto">
-    <div className="flex flex-wrap -m-4 text-center">
-      <div className="p-4 sm:w-1/4 w-1/2">
-        <h2 className="title-font font-medium sm:text-4xl text-3xl text-white">2.7K</h2>
-        <p className="leading-relaxed">Sunrise (Avg)</p>
-      </div>
-      <div className="p-4 sm:w-1/4 w-1/2">
-        <h2 className="title-font font-medium sm:text-4xl text-3xl text-white">1.8K</h2>
-        <p className="leading-relaxed">Sunset (Avg)</p>
-      </div>
-      <div className="p-4 sm:w-1/4 w-1/2">
-        <h2 className="title-font font-medium sm:text-4xl text-3xl text-white">35</h2>
-        <p className="leading-relaxed">??</p>
-      </div>
-      <div className="p-4 sm:w-1/4 w-1/2">
-        <h2 className="title-font font-medium sm:text-4xl text-3xl text-white">4</h2>
-        <p className="leading-relaxed">??</p>
-      </div>
-    </div>
-  </div>
-</section>
-            <section className="text-gray-400 bg-gray-900 body-font">
-  <div className="container px-5 py-10 mx-auto flex items-center md:flex-row flex-col">
-    <div className="flex flex-col md:pr-10 md:mb-0 mb-6 pr-0 w-full md:w-auto md:text-left text-center">
-      <h2 className="text-xs text-indigo-400 tracking-widest font-medium title-font mb-1">Powered by Tomorrow.io</h2>
-      <h1 className="md:text-3xl text-2xl font-medium title-font text-white">Weather Forecast</h1>
-    </div>
-    <div className="flex md:ml-auto md:mr-0 mx-auto items-center flex-shrink-0 space-x-4">
-    </div>
-  </div>
-</section>
 
             <Charts />
         </main>
