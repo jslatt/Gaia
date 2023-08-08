@@ -5,6 +5,8 @@ const { Configuration, OpenAIApi } = require("openai");
 const parse = require('html-react-parser');
 import { Loader } from '@googlemaps/js-api-loader';
 
+import Timeline from './timeline';
+
 export default function Main() {
 
     //const [image, setImage] = useState(null);
@@ -38,41 +40,41 @@ export default function Main() {
 
     const configuration = new Configuration({
         apiKey: process.env.OPENAI_API_KEY,
-      });
+    });
     const openai = new OpenAIApi(configuration);
 
     async function askGPT(promptPass) {
         const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
-            messages: [{"role": "system", "content": "You are a helpful assistant."}, {role: "user", content: promptPass}],
-          });
+            messages: [{ "role": "system", "content": "You are a helpful assistant." }, { role: "user", content: promptPass }],
+        });
 
-          console.log(completion.data.choices[0].message.content);
+        console.log(completion.data.choices[0].message.content);
 
         setAnalysis(completion.data.choices[0].message.content);
     }
 
-        // GOOGLE MAP
-        const loadMap = async () => {
-            const loader = new Loader({
-              apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-              libraries: ['places'],
-            });
-            const google = await loader.load();
-        
-            const mapOptions = {
-              center: { lat: parseFloat(lat), lng: parseFloat(long) },
-              zoom: 12,
-            };
-        
-            setMap(new google.maps.Map(document.getElementById('map'), mapOptions));
-          };
-        
-          useEffect(() => {
-            loadMap();
-          }, []);
+    // GOOGLE MAP
+    const loadMap = async () => {
+        const loader = new Loader({
+            apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+            libraries: ['places'],
+        });
+        const google = await loader.load();
 
-          
+        const mapOptions = {
+            center: { lat: parseFloat(lat), lng: parseFloat(long) },
+            zoom: 12,
+        };
+
+        setMap(new google.maps.Map(document.getElementById('map'), mapOptions));
+    };
+
+    useEffect(() => {
+        loadMap();
+    }, []);
+
+
 
     function getWeather() {
 
@@ -91,9 +93,9 @@ export default function Main() {
         const map = setMap(new google.maps.Map(document.getElementById('map'), {
             center: { lat: parseFloat(lat), lng: parseFloat(long) },
             zoom: 12,
-          }));
+        }));
     }
-    
+
     const spinner = `
     <center>
     <div role="status">
@@ -105,7 +107,6 @@ export default function Main() {
     </div>
     </center>
 `
-
 
     return (
 
@@ -126,7 +127,7 @@ export default function Main() {
                     </form>
 
                     <div>
-                    <div id="map" style={{ height: '600px' }}></div>
+                        <div id="map" style={{ height: '600px' }}></div>
                     </div>
                 </div>
                 <div className="bg-grey-900 h-screen p-4 col-span-3">
@@ -142,8 +143,6 @@ export default function Main() {
                     <h2 className="sm:text-3xl text-2xl text-white title-font font-medium text-gray-900 mt-4 mb-4">Weather Warfighting Analysis</h2>
                     <span className="inline-block py-1 px-2 rounded bg-indigo-50 text-indigo-500 text-xs font-medium tracking-widest">OpenAI GPT-3.5</span>
                     <div className='py-4'>{analysis ? parse(analysis) : parse(spinner)}</div>
-
-
                 </div>
             </div>
 
