@@ -5,11 +5,8 @@ const { Configuration, OpenAIApi } = require("openai");
 const parse = require('html-react-parser');
 import { Loader } from '@googlemaps/js-api-loader';
 
-import Timeline from './timeline';
-
 export default function Main() {
 
-    //const [image, setImage] = useState(null);
     const [lat, setLat] = useState(38.5167915);
     const [long, setLong] = useState(-77.2988706);
     const [data, setData] = useState('');
@@ -143,6 +140,7 @@ export default function Main() {
                     <h2 className="sm:text-3xl text-2xl text-white title-font font-medium text-gray-900 mt-4 mb-4">Weather Warfighting Analysis</h2>
                     <span className="inline-block py-1 px-2 rounded bg-indigo-50 text-indigo-500 text-xs font-medium tracking-widest">OpenAI GPT-3.5</span>
                     <div className='py-4'>{analysis ? parse(analysis) : parse(spinner)}</div>
+
                 </div>
             </div>
 
