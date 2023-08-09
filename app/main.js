@@ -4,6 +4,7 @@ import Image from 'next/image';
 const { Configuration, OpenAIApi } = require("openai");
 const parse = require('html-react-parser');
 import { Loader } from '@googlemaps/js-api-loader';
+import demo_data from './demo_data.json';
 
 //import Chart from 'react-google-charts';
 import Charts from './charts.js';
@@ -12,9 +13,12 @@ export default function Main() {
 
     const [lat, setLat] = useState(38.5167915);
     const [long, setLong] = useState(-77.2988706);
-    const [data, setData] = useState('');
+    const [data, setData] = useState(demo_data);
     const [analysis, setAnalysis] = useState('Nothing to see here :-) Enter coordinates to begin.');
     const [map, setMap] = useState(null);
+
+    const [rendered, setRendered] = useState(false);
+
 
 
 
@@ -67,6 +71,7 @@ export default function Main() {
         };
 
         setMap(new google.maps.Map(document.getElementById('map'), mapOptions));
+
     };
 
     useEffect(() => {
@@ -81,9 +86,10 @@ export default function Main() {
 
         axios.request(options).then(function (response) {
             setData(response.data);
-            let p = "You are a squad leader for a Marine Corps infantry squad. Your task is to use this weather data to produce a report on how the weather will impact the mission. Provide specific guidance on how this weather will impact the Marines willingness to fight, and how the USMC can use this as an advantage against the enemy.  Provide with the following headings format: Positive Impacts (h2), Negative Impacts (h2) Enemies perspective (h2). Do not provide any other information. It should be at least 500 words. Split it up by each section and format the output in a HTML Div. Answer with bullet points and formatted headers. Do not include <head> tags or <HTML> tags. Give <h2> the following classes: sm:text-3xl text-2xl text-white title-font font-medium text-gray-900 mt-4 mb-4. Give the <ul> the classes: space-y-2 list-disc list-inside. \n " + JSON.stringify(response.data);
+            let p = "You are a squad leader for a Marine Corps infantry squad. Your task is to use this weather data to produce a report on how the weather will impact the mission. Provide specific guidance on how this weather will impact the Marines willingness to fight, and how the USMC can use this as an advantage against the enemy. Weather is analyzed using the five military aspects of weather: temperature/humidity, precipitation, wind, clouds, and visibility (day and night). How will these elements influence the operations of each combatant? To determine its cumulative effect on the operation, weather must be considered in conjunction with the associated terrain. Weather affects equipment (including electronic and optical), terrain (traffic-ability), and visibility. Inclement weather affects visibility, rates of movement, routes of movement, unit efficiency and morale, and makes command and control more difficult. Poor weather conditions can be as much of an advantage as a disadvantage to a unit, depending upon the unit’s capabilities, equipment, and training. Provide with the following headings format: Positive Impacts (h2), Negative Impacts (h2) Enemies perspective (h2). Do not provide any other information. It should be at least 500 words. Split it up by each section and format the output in a HTML Div. Answer with bullet points and formatted headers. Do not include <head> tags or <HTML> tags. Give <h2> the following classes: sm:text-3xl text-2xl text-white title-font font-medium text-gray-900 mt-4 mb-4. Give the <ul> the classes: space-y-2 list-disc list-inside.  \n " + JSON.stringify(response.data);
             p = p.substring(0, 8000)
             askGPT(p)
+            setRendered(true);
         }).catch(function (error) {
             console.error(error);
         });
@@ -136,10 +142,10 @@ export default function Main() {
                     <form>
                         <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                         <div className="relative">
-                            <input type="text" id="lat" onChange={changeLat} className="block w-full p-4 pl-10 text-sm text-gray-900  bg-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="LATTITUDE" required />
-                            <input type="text" id="long" onChange={changeLong} className="block w-full p-4 pl-10 text-sm text-gray-900  bg-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="LONGITUDE" required />
+                            <input type="number" id="lat" onChange={changeLat} className="block w-full p-4 pl-10 text-sm text-gray-900  bg-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="LATTITUDE" required />
+                            <input type="number" id="long" onChange={changeLong} className="block w-full p-4 pl-10 text-sm text-gray-900  bg-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="LONGITUDE" required />
 
-                            <a onClick={getWeather} className="cursor-pointer text-white absolute right-2.5 bottom-2.5 bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Analyze</a>
+                            <a onClick={getWeather} className="cursor-pointer text-white absolute right-2.5 bottom-2.5 bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Analyze</a>
                         </div>
                     </form>
 
@@ -154,7 +160,7 @@ export default function Main() {
                                 <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
                                 <path d="M22 4L12 14.01l-3-3"></path>
                             </svg>
-                            <span className="title-font font-medium text-white">{data ? "Lat: " + JSON.stringify(data.location.lat) : "Enter a location to begin..."}{data ? ", Long: " + JSON.stringify(data.location.lon) : null}</span>
+                            <span className="title-font font-medium text-white">{data ? "Lat: " + JSON.stringify(lat) : "Enter a location to begin..."}{data ? ", Long: " + JSON.stringify(long) : null}</span>
                         </div>
                     </div>
                     <h2 className="sm:text-3xl text-2xl text-white title-font font-medium text-gray-900 mt-4 mb-4">Weather Warfighting Analysis</h2>
@@ -165,7 +171,7 @@ export default function Main() {
                 </div>
             </div>
             
-            <Charts />
+            <Charts weatherData={data} rendered={rendered} />
         </main>
     )
 }
